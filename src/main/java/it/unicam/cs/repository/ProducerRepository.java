@@ -1,8 +1,8 @@
 package it.unicam.cs.repository;
 
-import it.unicam.cs.model.Product;
+import it.unicam.cs.model.Producer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long> { }
+public interface ProducerRepository  extends JpaRepository<Producer,Long> { }

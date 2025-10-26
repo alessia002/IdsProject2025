@@ -1,9 +1,11 @@
 package it.unicam.cs.controller;
 
-import it.unicam.cs.model.Product;
+import it.unicam.cs.dto.ProductDTO;
 import it.unicam.cs.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/product")
@@ -12,18 +14,25 @@ public class ProductController {
 
     public ProductController(ProductService service) { this.service = service; }
 
-    @PostMapping("/create")
-    public ResponseEntity<Product> create(@RequestBody Product product) { return ResponseEntity.ok(service.create(product)); }
+    @PostMapping("/upload")
+    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO) { return ResponseEntity.ok(service.create(productDTO)); }
+
+    @PostMapping("/unpublish")
+    public ResponseEntity<ProductDTO> unpublish(@RequestParam("id") Long id) { return ResponseEntity.ok(service.unpublish(id)); }
+
+    @PostMapping("/publish")
+    public ResponseEntity<ProductDTO> publish(@RequestParam("id") Long id) { return ResponseEntity.ok(service.publish(id)); }
 
     @PostMapping("/update")
-    public ResponseEntity<Product> update(@RequestParam("id") Long id, @RequestBody Product product) { return ResponseEntity.ok(service.update(id,product)); }
+    public ResponseEntity<ProductDTO> update(@RequestParam("id") Long id, @RequestBody ProductDTO dto) { return ResponseEntity.ok(service.update(id,dto)); }
 
     @GetMapping("/delete")
-    public ResponseEntity<Product> delete(@RequestParam("id") Long id) {
-        service.delete(id);
-        return null;
-    }
+    public ResponseEntity<ProductDTO> delete(@RequestParam("id") Long id) {service.delete(id);return null;}
 
     @GetMapping("/searchById")
-    public ResponseEntity<Product> searchById(@RequestParam("id") Long id) {return ResponseEntity.ok(service.searchById(id));}
+    public ResponseEntity<ProductDTO> searchById(@RequestParam("id") Long id) {return ResponseEntity.ok(service.searchById(id));}
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<ProductDTO>> getAll() {return ResponseEntity.ok(service.getAll());}
+
 }

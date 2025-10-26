@@ -1,9 +1,14 @@
 package it.unicam.cs.model;
 
+import it.unicam.cs.enums.Status;
 import jakarta.persistence.*;
+import lombok.*;
 
+@Data
 @Entity
 @Table(name= "product")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,39 +16,15 @@ public class Product {
     private String name;
     private Double price;
     private String category;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    public Product() {}
-
-    public Long getId() {
-        return id;
+    public void unpublish() {
+        this.status = Status.DRAFT;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    public void publish() {
+        this.status = Status.PUBLISHED;
     }
 }
 
