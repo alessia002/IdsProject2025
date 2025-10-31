@@ -36,6 +36,7 @@ public class User {
     @Column(name = "role")
     private Set<Role> roles;
 
+    @ElementCollection
     private List<Permission> permissions;
 
     public boolean hasPermission(Permission permission) {
