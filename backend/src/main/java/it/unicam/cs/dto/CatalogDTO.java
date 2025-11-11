@@ -1,8 +1,7 @@
 package it.unicam.cs.dto;
 
-import it.unicam.cs.enums.Status;
+import it.unicam.cs.enums.ProductStatus;
 import lombok.*;
-
 import java.util.List;
 
 @Data
@@ -15,6 +14,5 @@ public class CatalogDTO {
     private String description;
     private List<ProductDTO> productList;
     private int numProduct;
-    private Status status;
-
+    private ProductStatus status;
 }

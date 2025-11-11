@@ -1,6 +1,7 @@
 package it.unicam.cs.controller;
 
 import it.unicam.cs.dto.ProductDTO;
+import it.unicam.cs.dto.ReviewDTO;
 import it.unicam.cs.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +27,8 @@ public class ProductController {
     @PostMapping("/update")
     public ResponseEntity<ProductDTO> update(@RequestParam("id") Long id, @RequestBody ProductDTO dto) { return ResponseEntity.ok(service.update(id,dto)); }
 
-    @GetMapping("/delete")
-    public ResponseEntity<ProductDTO> delete(@RequestParam("id") Long id) {service.delete(id);return null;}
+    @DeleteMapping("/delete")
+    public ResponseEntity<ProductDTO> delete(@RequestParam("id") Long id) { return ResponseEntity.ok(service.delete(id));}
 
     @GetMapping("/searchById")
     public ResponseEntity<ProductDTO> searchById(@RequestParam("id") Long id) {return ResponseEntity.ok(service.searchById(id));}
@@ -35,4 +36,8 @@ public class ProductController {
     @GetMapping("/getAll")
     public ResponseEntity<List<ProductDTO>> getAll() {return ResponseEntity.ok(service.getAll());}
 
+    @PostMapping("/addReview")
+    public ResponseEntity<ProductDTO> addReview(@RequestParam("id") Long id, @RequestBody ReviewDTO reviewDTO) {
+        return ResponseEntity.ok(service.addReview(id, reviewDTO));
+    }
 }

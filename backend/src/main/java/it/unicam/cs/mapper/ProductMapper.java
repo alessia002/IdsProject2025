@@ -4,7 +4,7 @@ import it.unicam.cs.dto.ProductDTO;
 import it.unicam.cs.model.Product;
 import org.mapstruct.*;
 
-@Mapper(componentModel ="spring")
+@Mapper(componentModel = "spring", uses = { ReviewMapper.class })
 public interface ProductMapper {
     ProductDTO toDTO(Product product);
     Product toEntity(ProductDTO dto);

@@ -1,15 +1,17 @@
 package it.unicam.cs.model;
 
-import it.unicam.cs.enums.Status;
+import it.unicam.cs.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Entity
 @Table(name= "product")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Product implements IProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,14 +19,20 @@ public class Product {
     private Double price;
     private String category;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private ProductStatus status;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Review> reviews;
 
     public void unpublish() {
-        this.status = Status.DRAFT;
+        this.status = ProductStatus.DRAFT;
+    }
+    public void publish() {
+        this.status = ProductStatus.PUBLISHED;
     }
 
-    public void publish() {
-        this.status = Status.PUBLISHED;
+    @Override
+    public void addReview(Review review) {
+        reviews.add(review);
     }
 }
 

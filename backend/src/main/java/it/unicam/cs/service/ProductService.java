@@ -1,9 +1,15 @@
 package it.unicam.cs.service;
 
 import it.unicam.cs.dto.ProductDTO;
+import it.unicam.cs.dto.ReviewDTO;
 import it.unicam.cs.mapper.ProductMapper;
+import it.unicam.cs.mapper.ReviewMapper;
 import it.unicam.cs.model.Product;
+import it.unicam.cs.model.Review;
+import it.unicam.cs.platform.ProductDecorator;
+import it.unicam.cs.platform.ReviewDecorator;
 import it.unicam.cs.repository.ProductRepository;
+import it.unicam.cs.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +21,8 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository repo;
     private final ProductMapper mapper;
+    private final ReviewRepository reviewRepo;
+    private final ReviewMapper reviewMapper;
 
     public ProductDTO create(ProductDTO dto) {
         Product product = mapper.toEntity(dto);
@@ -50,11 +58,11 @@ public class ProductService {
     }
 
 
-    public void delete(Long id) {
-        if (!repo.existsById(id)) {
-            throw new EntityNotFoundException("Product not found with id " + id);
-        }
+    public ProductDTO delete(Long id) {
+        Product product = repo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
         repo.deleteById(id);
+        return mapper.toDTO(product);
     }
 
     public ProductDTO searchById(Long id) {
@@ -63,5 +71,19 @@ public class ProductService {
 
     public List<ProductDTO> getAll() {
         return repo.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
+    }
+
+    public ProductDTO addReview(Long id, ReviewDTO reviewDto) {
+        Product existingProduct = repo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
+
+        Review review = reviewMapper.toEntity(reviewDto);
+        review.setProduct(existingProduct);
+
+        ProductDecorator reviewDecorator = new ReviewDecorator(existingProduct);
+        reviewDecorator.addReview(review);
+
+        Product updated = repo.save(existingProduct);
+        return mapper.toDTO(updated);
     }
 }

@@ -1,6 +1,6 @@
 package it.unicam.cs.model;
 
-import it.unicam.cs.enums.Status;
+import it.unicam.cs.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,18 +22,22 @@ public class Catalog {
     @OneToMany
     private List<Product> productList;
     private int numProduct;
-    private Status status;
+    private ProductStatus status;
 
     public void unpublish() {
-        this.status = Status.DRAFT;
+        this.status = ProductStatus.DRAFT;
     }
 
     public void publish() {
-        this.status = Status.PUBLISHED;
+        this.status = ProductStatus.PUBLISHED;
     }
 
-    public void addProduct(Product p) { this.productList.add(p);}
+    public void addProduct(Product p) {
+        this.productList.add(p);
+        this.numProduct += 1;
+    }
 
-    public void removeProduct(Product p){ this.productList.remove(p);}
-
+    public void removeProduct(Product p){
+        this.productList.remove(p);
+        this.numProduct -= 1; }
 }

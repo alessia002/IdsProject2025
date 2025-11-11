@@ -55,11 +55,11 @@ public class CatalogService {
     }
 
 
-    public void delete(Long id) {
-        if (!repo.existsById(id)) {
-            throw new EntityNotFoundException("Product not found with id " + id);
-        }
+    public CatalogDTO delete(Long id) {
+        Catalog catalog = repo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Catalog not found with id " + id));
         repo.deleteById(id);
+        return mapper.toDTO(catalog);
     }
 
     public CatalogDTO searchById(Long id) {

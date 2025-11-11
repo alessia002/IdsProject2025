@@ -4,7 +4,7 @@ import it.unicam.cs.dto.OrderDTO;
 import it.unicam.cs.model.Order;
 import org.mapstruct.*;
 
-@Mapper(componentModel ="spring")
+@Mapper(componentModel = "spring", uses = { ProductMapper.class })
 public interface OrderMapper {
     OrderDTO toDTO(Order order);
     Order toEntity(OrderDTO dto);

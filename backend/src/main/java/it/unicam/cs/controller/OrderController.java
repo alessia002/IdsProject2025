@@ -20,8 +20,8 @@ public class OrderController {
     @PostMapping("/update")
     public ResponseEntity<OrderDTO> update(@RequestParam("id") Long id, @RequestBody OrderDTO dto) { return ResponseEntity.ok(service.update(id,dto)); }
 
-    @GetMapping("/delete")
-    public ResponseEntity<OrderDTO> delete(@RequestParam("id") Long id) {service.delete(id);return null;}
+    @DeleteMapping("/delete")
+    public ResponseEntity<OrderDTO> delete(@RequestParam("id") Long id) { return ResponseEntity.ok(service.delete(id)); }
 
     @GetMapping("/searchById")
     public ResponseEntity<OrderDTO> searchById(@RequestParam("id") Long id) {return ResponseEntity.ok(service.searchById(id));}

@@ -17,7 +17,7 @@ public class CatalogController {
     public CatalogController(CatalogService service) { this.service = service; }
 
     @PostMapping("/upload")
-    public ResponseEntity<CatalogDTO> create(@RequestBody CatalogDTO productDTO) { return ResponseEntity.ok(service.create(productDTO)); }
+    public ResponseEntity<CatalogDTO> create(@RequestBody CatalogDTO catalogDTO) { return ResponseEntity.ok(service.create(catalogDTO)); }
 
     @PostMapping("/unpublish")
     public ResponseEntity<CatalogDTO> unpublish(@RequestParam("id") Long id) { return ResponseEntity.ok(service.unpublish(id)); }
@@ -28,8 +28,8 @@ public class CatalogController {
     @PostMapping("/update")
     public ResponseEntity<CatalogDTO> update(@RequestParam("id") Long id, @RequestBody CatalogDTO dto) { return ResponseEntity.ok(service.update(id,dto)); }
 
-    @GetMapping("/delete")
-    public ResponseEntity<CatalogDTO> delete(@RequestParam("id") Long id) {service.delete(id);return null;}
+    @DeleteMapping("/delete")
+    public ResponseEntity<CatalogDTO> delete(@RequestParam("id") Long id) { return ResponseEntity.ok(service.delete(id)); }
 
     @GetMapping("/searchById")
     public ResponseEntity<CatalogDTO> searchById(@RequestParam("id") Long id) {return ResponseEntity.ok(service.searchById(id));}

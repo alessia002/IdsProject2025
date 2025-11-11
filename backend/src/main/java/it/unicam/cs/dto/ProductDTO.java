@@ -1,7 +1,10 @@
 package it.unicam.cs.dto;
 
-import it.unicam.cs.enums.Status;
+import it.unicam.cs.enums.ProductStatus;
+import it.unicam.cs.model.Review;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -11,5 +14,6 @@ public class ProductDTO {
     private String name;
     private Double price;
     private String category;
-    private Status status;
+    private ProductStatus status;
+    private List<ReviewDTO> reviews;
 }

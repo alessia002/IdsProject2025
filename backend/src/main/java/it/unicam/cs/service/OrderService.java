@@ -33,11 +33,11 @@ public class OrderService {
         return mapper.toDTO(updated);
     }
 
-    public void delete(Long id) {
-        if (!repo.existsById(id)) {
-            throw new EntityNotFoundException("Product not found with id " + id);
-        }
+    public OrderDTO delete(Long id) {
+        Order order = repo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
         repo.deleteById(id);
+        return mapper.toDTO(order);
     }
 
     public OrderDTO searchById(Long id) {

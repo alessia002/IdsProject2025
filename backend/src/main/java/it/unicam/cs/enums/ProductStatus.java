@@ -1,6 +1,6 @@
 package it.unicam.cs.enums;
 
-public enum Status {
+public enum ProductStatus {
     PUBLISHED,
     DRAFT,
 }
