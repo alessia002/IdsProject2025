@@ -2,9 +2,11 @@ package it.unicam.cs.dto;
 
 import it.unicam.cs.enums.OrderStatus;
 import it.unicam.cs.model.Product;
+import it.unicam.cs.model.Package;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -12,7 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDTO {
     private Long id;
+    private LocalDateTime date;
     private Double total;
     private List<Product> products;
+    private List<Package> packages;
     private OrderStatus status;
+    private String creationUserUsername;
 }

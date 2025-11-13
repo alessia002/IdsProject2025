@@ -22,7 +22,14 @@ public class Catalog {
     @OneToMany
     private List<Product> productList;
     private int numProduct;
+    @Enumerated(EnumType.STRING)
+    @OneToMany
+    private List<Package> packageList;
+    private int numPackage;
     private ProductStatus status;
+    @ManyToOne
+    @JoinColumn(name = "creation_user_username")
+    private User creationUser;
 
     public void unpublish() {
         this.status = ProductStatus.DRAFT;
@@ -40,4 +47,14 @@ public class Catalog {
     public void removeProduct(Product p){
         this.productList.remove(p);
         this.numProduct -= 1; }
+
+    public void addPackage(Package p) {
+        this.packageList.add(p);
+        this.numPackage += 1;
+    }
+
+    public void removePackage(Package p){
+        this.packageList.remove(p);
+        this.numPackage -= 1;
+    }
 }

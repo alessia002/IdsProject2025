@@ -12,7 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 public class PackageDTO {
     private Long id;
-    private Double total;
+    private String name;
+    private String description;
+    private Double price;
     private List<Product> productList;
+    private int numProducts;
     private ProductStatus status;
+    private String creationUserUsername;
 }

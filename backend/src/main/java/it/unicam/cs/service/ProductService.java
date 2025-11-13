@@ -39,6 +39,14 @@ public class ProductService {
         return mapper.toDTO(product);
     }
 
+    public ProductDTO validate(Long id) {
+        Product product = repo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
+        product.validate();
+        repo.save(product);
+        return mapper.toDTO(product);
+    }
+
     public ProductDTO publish(Long id) {
         Product product = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));

@@ -19,4 +19,7 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+    @ManyToOne
+    @JoinColumn(name = "creaton_user_username")
+    private User creationUser;
 }

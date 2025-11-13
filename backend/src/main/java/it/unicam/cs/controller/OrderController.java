@@ -4,7 +4,6 @@ import it.unicam.cs.dto.OrderDTO;
 import it.unicam.cs.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -28,4 +27,10 @@ public class OrderController {
 
     @GetMapping("/getAll")
     public ResponseEntity<List<OrderDTO>> getAll() {return ResponseEntity.ok(service.getAll());}
+
+    @PostMapping("/addProduct")
+    public ResponseEntity<OrderDTO> addProduct(@RequestParam("idProduct") Long idProduct, @RequestParam("idOrder") Long idOrder) { return ResponseEntity.ok(service.addProduct(idProduct, idOrder)); }
+
+    @PostMapping("/removeProduct")
+    public ResponseEntity<OrderDTO> removeProduct(@RequestParam("idProduct") Long idProduct, @RequestParam("idOrder") Long idOrder) { return ResponseEntity.ok(service.removeProduct(idProduct, idOrder)); }
 }

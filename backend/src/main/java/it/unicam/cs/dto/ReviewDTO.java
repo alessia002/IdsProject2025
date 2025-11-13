@@ -12,4 +12,5 @@ public class ReviewDTO {
     private String description;
     private double rating;
     private Long productId;
+    private String creationUserUsername;
 }

@@ -13,8 +13,7 @@ public class DistributorFactory extends UserFactory {
         Distributor distributor = new Distributor();
         distributor.setUsername(name);
         distributor.setPermissions(List.of(
-                Permission.CREATE_PRODUCT_PACKAGE,
-                Permission.DELETE_PRODUCT_PACKAGE));
+                Permission.MARKETPLACE_EDIT));
         return distributor;
     }
 }

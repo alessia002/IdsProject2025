@@ -1,6 +1,5 @@
 package it.unicam.cs.service;
 
-import it.unicam.cs.dto.CatalogDTO;
 import it.unicam.cs.dto.PackageDTO;
 import it.unicam.cs.dto.ProductDTO;
 import it.unicam.cs.mapper.PackageMapper;
@@ -42,14 +41,11 @@ public class PackageService {
     public PackageDTO delete(Long id) {
         Package delPackage = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
-
         repo.deleteById(id);
         return mapper.toDTO(delPackage);
     }
 
-    public PackageDTO searchById(Long id) {
-        return repo.findById(id).map(mapper::toDTO).orElseThrow();
-    }
+    public PackageDTO searchById(Long id) { return repo.findById(id).map(mapper::toDTO).orElseThrow(); }
 
     public List<PackageDTO> getAll() {
         return repo.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
@@ -70,7 +66,7 @@ public class PackageService {
     public PackageDTO removeProduct(Long idProduct, Long idPackage) {
         ProductDTO product= productService.searchById(idProduct);
         Package productPackage = repo.findById(idPackage)
-                .orElseThrow(() -> new EntityNotFoundException("Catalog not found with id " + idPackage));
+                .orElseThrow(() -> new EntityNotFoundException("Package not found with id " + idPackage));
 
         Product entityProduct = mapperProduct.toEntity(product);
         productPackage.removeProduct(entityProduct);

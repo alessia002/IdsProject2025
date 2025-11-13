@@ -13,9 +13,7 @@ public class ProducerFactory extends UserFactory {
         Producer producer = new Producer();
         producer.setUsername(name);
         producer.setPermissions(List.of(
-                Permission.UPLOAD_PRODUCT,
-                Permission.REMOVE_PRODUCT,
-                Permission.PUBLISH_PRODUCT));
+                Permission.MARKETPLACE_EDIT));
         return producer;
     }
 }

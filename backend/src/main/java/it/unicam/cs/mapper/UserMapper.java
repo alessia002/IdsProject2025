@@ -1,16 +1,14 @@
 package it.unicam.cs.mapper;
+
 import it.unicam.cs.dto.UserDTO;
 import it.unicam.cs.enums.Permission;
 import it.unicam.cs.enums.Role;
 import it.unicam.cs.model.User;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

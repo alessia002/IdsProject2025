@@ -7,12 +7,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class CatalogDTO {
     private Long id;
     private String name;
     private String description;
     private List<ProductDTO> productList;
     private int numProduct;
+    private List<PackageDTO> packageList;
+    private int numPackage;
     private ProductStatus status;
+    private String creationUserUsername;
 }

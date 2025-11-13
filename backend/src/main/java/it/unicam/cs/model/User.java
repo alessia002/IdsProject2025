@@ -1,5 +1,6 @@
 package it.unicam.cs.model;
 
+import it.unicam.cs.config.SecurityConfig;
 import it.unicam.cs.enums.Permission;
 import it.unicam.cs.enums.Role;
 import jakarta.persistence.*;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Set;
@@ -19,9 +21,6 @@ import java.util.Set;
 @Builder
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(nullable = false, unique = true)
     private String username;
 
