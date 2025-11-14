@@ -15,7 +15,7 @@ public class UserController {
     public UserController(UserService service) { this.service = service; }
 
     @PostMapping("/createProducer")
-    public ResponseEntity<UserDTO> createProducer(@RequestParam String name) { return ResponseEntity.ok(service.createProducer(name));}
+    public ResponseEntity<UserDTO> createProducer(@RequestBody UserDTO dto) { return ResponseEntity.ok(service.createProducer(dto));}
 
     @PostMapping("/createTransformer")
     public ResponseEntity<UserDTO> createTransformer(@RequestBody UserDTO dto) { return ResponseEntity.ok(service.createTransformer(dto));}

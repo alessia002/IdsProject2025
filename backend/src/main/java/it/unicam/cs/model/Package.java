@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
-
 
 @Data
 @Entity
@@ -18,7 +16,9 @@ public class Package {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double total = 0.0;
+    private String name;
+    private String description;
+    private Double price = 0.0;
     @ManyToMany
     @JoinTable(
             name = "package_products",
@@ -26,19 +26,30 @@ public class Package {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> productList;
+    private int numProducts;
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
+    @ManyToOne
+    @JoinColumn(name = "creation_user_username")
+    private User creationUser;
 
     public void addProduct(Product product) {
         if (product == null) return;
         productList.add(product);
-        total += product.getPrice();
+        this.price += product.getPrice();
     }
 
     public void removeProduct(Product product) {
         if (product == null || !productList.contains(product)) return;
         productList.remove(product);
-        total -= product.getPrice();
+        this.price -= product.getPrice();
+    }
+
+    public void removeFromStock(int quantity) {
+        if(productList.stream().anyMatch(product -> product.getStock() < quantity)) {
+            throw new IllegalArgumentException("Not enough products in stock");
+        }
+        productList.forEach(product -> product.removeFromStock(quantity));
     }
 
 }

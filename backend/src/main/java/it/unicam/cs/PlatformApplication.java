@@ -26,7 +26,7 @@ public class PlatformApplication {
     @Bean
     CommandLineRunner initUsers(UserRepository repo, PasswordEncoder encoder) {
         return args -> {
-            if(repo.findByUsername("admin").isEmpty()) {
+            if(repo.findById("admin").isEmpty()) {
                 User admin = User.builder()
                         .username("admin")
                         .password(encoder.encode(adminPassword))

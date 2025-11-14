@@ -21,6 +21,9 @@ public class ProductController {
     @PostMapping("/unpublish")
     public ResponseEntity<ProductDTO> unpublish(@RequestParam("id") Long id) { return ResponseEntity.ok(service.unpublish(id)); }
 
+    @PostMapping("/validate")
+    public ResponseEntity<ProductDTO> validate(@RequestParam("id") Long id) { return ResponseEntity.ok(service.validate(id)); }
+
     @PostMapping("/publish")
     public ResponseEntity<ProductDTO> publish(@RequestParam("id") Long id) { return ResponseEntity.ok(service.publish(id)); }
 
@@ -40,4 +43,5 @@ public class ProductController {
     public ResponseEntity<ProductDTO> addReview(@RequestParam("id") Long id, @RequestBody ReviewDTO reviewDTO) {
         return ResponseEntity.ok(service.addReview(id, reviewDTO));
     }
+
 }

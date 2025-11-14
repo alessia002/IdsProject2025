@@ -13,7 +13,7 @@ public class TransformerFactory extends UserFactory {
         Transformer transformer = new Transformer();
         transformer.setUsername(name);
         transformer.setPermissions(List.of(
-                Permission.ADD_TRANSFORMATION_INFO));
+                Permission.MARKETPLACE_EDIT));
         return transformer;
     }
 }
