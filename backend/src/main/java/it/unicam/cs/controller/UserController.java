@@ -23,6 +23,9 @@ public class UserController {
     @PostMapping("/createDistributor")
     public ResponseEntity<UserDTO> createDistributor(@RequestBody UserDTO dto) { return ResponseEntity.ok(service.createDistributor(dto));}
 
+    @PostMapping("/createCurator")
+    public ResponseEntity<UserDTO> createCurator(@RequestBody UserDTO dto) { return ResponseEntity.ok(service.createCurator(dto));}
+
     @GetMapping("/getAll")
     public ResponseEntity<List<UserDTO>> getAll() {return ResponseEntity.ok(service.getAll());}
 

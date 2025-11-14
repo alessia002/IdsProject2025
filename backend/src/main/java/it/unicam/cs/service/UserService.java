@@ -3,9 +3,11 @@ package it.unicam.cs.service;
 import it.unicam.cs.dto.UserDTO;
 import it.unicam.cs.mapper.UserMapper;
 import it.unicam.cs.model.*;
+import it.unicam.cs.platform.CuratorFactory;
 import it.unicam.cs.platform.DistributorFactory;
 import it.unicam.cs.platform.ProducerFactory;
 import it.unicam.cs.platform.TransformerFactory;
+import it.unicam.cs.repository.CuratorRepository;
 import it.unicam.cs.repository.DistributorRepository;
 import it.unicam.cs.repository.ProducerRepository;
 import it.unicam.cs.repository.TransformerRepository;
@@ -30,6 +32,8 @@ public class UserService {
     private final ProducerFactory producerFactory = new ProducerFactory();
     private final TransformerFactory transformerFactory = new TransformerFactory();
     private final DistributorFactory distributorFactory = new DistributorFactory();
+    private final CuratorFactory curatorFactory;
+    private final CuratorRepository curatorRepository;
 
     public UserDTO createProducer(UserDTO dto) {
         if (producerRepo.findById(dto.getUsername()).isPresent()) {
@@ -61,7 +65,16 @@ public class UserService {
         return mapper.toDTO(saved);
     }
 
+    public UserDTO createCurator(UserDTO dto) {
+        User user = curatorFactory.createUser(dto.getUsername());
+        User saved = curatorRepository.save((Curator) user);
+        return mapper.toDTO(saved);
+    }
+
+
     public List<UserDTO> getAll() {
         return userRepo.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
+
+
 }

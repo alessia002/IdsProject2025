@@ -1,5 +1,6 @@
 package it.unicam.cs.dto;
 
+import it.unicam.cs.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,5 @@ public class ReviewDTO {
     private double rating;
     private Long productId;
     private String creationUserUsername;
+    private Long productId ;
 }
