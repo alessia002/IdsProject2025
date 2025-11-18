@@ -48,6 +48,12 @@ public class Catalog {
     }
 
     public void addProduct(Product p) {
+        if(p == null){
+            throw new IllegalArgumentException("Product must not be null");
+        }
+        if(p.getStatus()!=ProductStatus.PUBLISHED){
+            throw new IllegalArgumentException("Product is not published");
+        }
         this.productList.add(p);
         this.numProduct += 1;
     }

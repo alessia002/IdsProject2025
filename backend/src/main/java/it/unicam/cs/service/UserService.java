@@ -56,7 +56,7 @@ public class UserService {
     }
 
     public UserDTO createDistributor(UserDTO dto) {
-        if (producerRepo.findById(dto.getUsername()).isPresent()) {
+        if (distributorRepo.findById(dto.getUsername()).isPresent()) {
             throw new EntityNotFoundException("Username already exists");
         }
         User user = distributorFactory.createUser(dto.getUsername());
@@ -66,7 +66,7 @@ public class UserService {
     }
 
     public UserDTO createCurator(UserDTO dto) {
-        if (producerRepo.findById(dto.getUsername()).isPresent()) {
+        if (curatorRepository.findById(dto.getUsername()).isPresent()) {
             throw new EntityNotFoundException("Username already exists");
         }
         User user = curatorFactory.createUser(dto.getUsername());

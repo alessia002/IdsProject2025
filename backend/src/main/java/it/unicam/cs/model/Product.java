@@ -36,7 +36,14 @@ public class Product implements IProduct {
     public void validate() {this.status = ProductStatus.PUBLISHED;}
 
     @Override
-    public void addReview(Review review) {reviews.add(review);}
+    public void addReview(Review review) {
+        if(review == null){
+            throw new IllegalArgumentException("Review must not be null");
+        }
+        if(status != ProductStatus.PUBLISHED){
+            throw new IllegalArgumentException("Product is not published");
+        }
+        reviews.add(review);}
 
     public int removeFromStock(int quantity) {
         if (quantity <= 0) {

@@ -34,7 +34,12 @@ public class Package {
     private User creationUser;
 
     public void addProduct(Product product) {
-        if (product == null) return;
+        if(product == null){
+            throw new IllegalArgumentException("Product must not be null");
+        }
+        if(product.getStatus()!=ProductStatus.PUBLISHED){
+            throw new IllegalArgumentException("Product is not published");
+        }
         productList.add(product);
         this.price += product.getPrice();
     }
