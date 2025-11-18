@@ -13,8 +13,7 @@ public class CuratorFactory extends UserFactory {
         Curator curator = new Curator();
         curator.setUsername(name);
         curator.setPermissions(List.of(
-                Permission.CREATE_PRODUCT_PACKAGE,
-                Permission.DELETE_PRODUCT_PACKAGE));
+                Permission.MARKETPLACE_EDIT));
         return curator;
     }
 }

@@ -24,13 +24,14 @@ public class OrderService {
 
     public OrderDTO create(OrderDTO dto) {
         Order order = mapper.toEntity(dto);
+        order.confirm();
         Order saved = repo.save(order);
         return mapper.toDTO(saved);
     }
 
     public OrderDTO update(Long id, OrderDTO dto) {
         Order existingOrder = repo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id " + id));
 
         mapper.updateEntityFromDTO(dto, existingOrder);
 
@@ -40,9 +41,10 @@ public class OrderService {
 
     public OrderDTO delete(Long id) {
         Order order = repo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id " + id));
+        OrderDTO dto = mapper.toDTO(order);
         repo.deleteById(id);
-        return mapper.toDTO(order);
+        return dto;
     }
 
     public OrderDTO searchById(Long id) {

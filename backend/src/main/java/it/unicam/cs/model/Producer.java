@@ -3,6 +3,6 @@ package it.unicam.cs.model;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("PRODUCER")
+@DiscriminatorValue("ROLE_PRODUCER")
 public class Producer extends User {
 }

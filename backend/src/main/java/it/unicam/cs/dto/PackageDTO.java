@@ -14,7 +14,7 @@ public class PackageDTO {
     private Long id;
     private String name;
     private String description;
-    private Double price;
+    private double price;
     private List<Product> productList;
     private int numProducts;
     private ProductStatus status;

@@ -6,26 +6,34 @@ import lombok.*;
 
 import java.util.List;
 
-
 @Data
 @Entity
 @Table(name= "catalog")
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Catalog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "catalog_products",
+            joinColumns = @JoinColumn(name = "catalog_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private List<Product> productList;
     private int numProduct;
-    @Enumerated(EnumType.STRING)
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "catalog_packages",
+            joinColumns = @JoinColumn(name = "catalog_id"),
+            inverseJoinColumns = @JoinColumn(name = "package_id")
+    )
     private List<Package> packageList;
     private int numPackage;
+    @Enumerated(EnumType.STRING)
     private ProductStatus status;
     @ManyToOne
     @JoinColumn(name = "creation_user_username")

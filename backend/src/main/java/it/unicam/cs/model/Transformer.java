@@ -3,6 +3,6 @@ package it.unicam.cs.model;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("TRANSFORMER")
+@DiscriminatorValue("ROLE_TRANSFORMER")
 public class Transformer extends User {
 }

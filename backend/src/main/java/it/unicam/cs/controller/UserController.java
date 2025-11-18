@@ -29,4 +29,7 @@ public class UserController {
     @GetMapping("/getAll")
     public ResponseEntity<List<UserDTO>> getAll() {return ResponseEntity.ok(service.getAll());}
 
+    @GetMapping("")
+    public ResponseEntity<UserDTO> getByUsername(@RequestParam("username") String username) { return ResponseEntity.ok(service.getByUsername(username));}
+
 }

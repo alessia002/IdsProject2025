@@ -18,7 +18,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime date;
-    private Double price;
+    private double price;
     @ManyToMany
     @JoinTable(
             name = "order_products",

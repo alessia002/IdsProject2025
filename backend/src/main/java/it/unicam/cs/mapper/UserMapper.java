@@ -2,11 +2,9 @@ package it.unicam.cs.mapper;
 
 import it.unicam.cs.dto.UserDTO;
 import it.unicam.cs.enums.Permission;
-import it.unicam.cs.enums.Role;
 import it.unicam.cs.model.User;
 import org.mapstruct.Mapper;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,20 +30,6 @@ public interface UserMapper {
                 .map(String::trim)
                 .map(Permission::valueOf)
                 .collect(Collectors.toList());
-    }
-    default String rolesToString(Set<Role> roles) {
-        if (roles == null || roles.isEmpty()) return null;
-        return roles.stream()
-                .map(Role::name)
-                .collect(Collectors.joining(","));
-    }
-
-    default Set<Role> stringToRoles(String rolesString) {
-        if (rolesString == null || rolesString.isEmpty()) return Set.of();
-        return Stream.of(rolesString.split(","))
-                .map(String::trim)
-                .map(Role::valueOf)
-                .collect(Collectors.toSet());
     }
 
 }

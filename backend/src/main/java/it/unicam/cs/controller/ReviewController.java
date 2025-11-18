@@ -17,8 +17,8 @@ public class ReviewController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ReviewDTO> create(@RequestBody ReviewDTO ReviewDTO) {
-        return ResponseEntity.ok(service.create(ReviewDTO));
+    public ResponseEntity<ReviewDTO> create(@RequestBody ReviewDTO dto) {
+        return ResponseEntity.ok(service.create(dto));
     }
 
     @PostMapping("/update")
@@ -34,6 +34,16 @@ public class ReviewController {
     @GetMapping("/searchById")
     public ResponseEntity<ReviewDTO> searchById(@RequestParam("id") Long id) {
         return ResponseEntity.ok(service.searchById(id));
+    }
+
+    @GetMapping("/searchByProduct")
+    public ResponseEntity<List<ReviewDTO>> searchByProduct(@RequestParam("productId") Long productId) {
+        return ResponseEntity.ok(service.searchByProduct(productId));
+    }
+
+    @GetMapping("/searchByUser")
+    public ResponseEntity<List<ReviewDTO>> searchByUser(@RequestParam("username") String username) {
+        return ResponseEntity.ok(service.searchByUser(username));
     }
 
     @GetMapping("/getAll")

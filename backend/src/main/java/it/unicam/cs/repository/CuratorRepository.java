@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CuratorRepository  extends JpaRepository<Curator,Long> { }
+public interface CuratorRepository  extends JpaRepository<Curator,String> { }

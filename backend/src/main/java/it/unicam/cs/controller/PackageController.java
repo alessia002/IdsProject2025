@@ -1,14 +1,15 @@
 package it.unicam.cs.controller;
 
-import it.unicam.cs.dto.CatalogDTO;
 import it.unicam.cs.dto.PackageDTO;
 import it.unicam.cs.service.PackageService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Secured("ROLE_DISTRIBUTOR")
 @RequestMapping("/api/package")
 public class PackageController {
     private final PackageService service;

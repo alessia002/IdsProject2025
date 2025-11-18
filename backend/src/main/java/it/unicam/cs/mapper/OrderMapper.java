@@ -5,7 +5,7 @@ import it.unicam.cs.model.Order;
 import it.unicam.cs.model.Product;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", uses = { ProductMapper.class })
+@Mapper(componentModel = "spring", uses = { ProductMapper.class, PackageMapper.class  })
 public interface OrderMapper {
 
     @Mapping(target = "creationUserUsername", source = "creationUser.username")
@@ -19,7 +19,7 @@ public interface OrderMapper {
         if (entity.getProducts() != null) {
             entity.setPrice(entity.getProducts().stream().mapToDouble(Product::getPrice).sum());
         } else {
-            entity.setPrice(null);
+            entity.setPrice(0);
         }
     }
 

@@ -3,6 +3,6 @@ package it.unicam.cs.model;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("CURATOR")
+@DiscriminatorValue("ROLE_CURATOR")
 public class Curator extends User {
 }

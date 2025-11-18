@@ -66,7 +66,11 @@ public class UserService {
     }
 
     public UserDTO createCurator(UserDTO dto) {
+        if (producerRepo.findById(dto.getUsername()).isPresent()) {
+            throw new EntityNotFoundException("Username already exists");
+        }
         User user = curatorFactory.createUser(dto.getUsername());
+        user.setPassword(encoder.encode(dto.getPassword()));
         User saved = curatorRepository.save((Curator) user);
         return mapper.toDTO(saved);
     }
@@ -76,5 +80,8 @@ public class UserService {
         return userRepo.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
-
+    public UserDTO getByUsername(String username) {
+        return userRepo.findById(username).map(mapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("User " + username + " not found"));
+    }
 }

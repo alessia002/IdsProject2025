@@ -41,8 +41,9 @@ public class PackageService {
     public PackageDTO delete(Long id) {
         Package delPackage = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
+        PackageDTO dto = mapper.toDTO(delPackage);
         repo.deleteById(id);
-        return mapper.toDTO(delPackage);
+        return dto;
     }
 
     public PackageDTO searchById(Long id) { return repo.findById(id).map(mapper::toDTO).orElseThrow(); }

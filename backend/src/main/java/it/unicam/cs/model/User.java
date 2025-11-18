@@ -1,17 +1,13 @@
 package it.unicam.cs.model;
 
-import it.unicam.cs.config.SecurityConfig;
 import it.unicam.cs.enums.Permission;
-import it.unicam.cs.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -19,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 public class User {
     @Id
     @Column(nullable = false, unique = true)
@@ -29,13 +26,10 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "user_roles",
+            name = "user_permissions",
             joinColumns = @JoinColumn(name = "user_id")
     )
-    @Column(name = "role")
-    private Set<Role> roles;
-
-    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<Permission> permissions;
 
     public boolean hasPermission(Permission permission) {

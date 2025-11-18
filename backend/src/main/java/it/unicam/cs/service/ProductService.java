@@ -69,12 +69,14 @@ public class ProductService {
     public ProductDTO delete(Long id) {
         Product product = repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
+        ProductDTO dto = mapper.toDTO(product);
         repo.deleteById(id);
-        return mapper.toDTO(product);
+        return dto;
     }
 
     public ProductDTO searchById(Long id) {
-        return repo.findById(id).map(mapper::toDTO).orElseThrow();
+        return repo.findById(id).map(mapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id " + id));
     }
 
     public List<ProductDTO> getAll() {

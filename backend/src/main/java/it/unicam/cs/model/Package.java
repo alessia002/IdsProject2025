@@ -18,7 +18,7 @@ public class Package {
     private Long id;
     private String name;
     private String description;
-    private Double price = 0.0;
+    private double price;
     @ManyToMany
     @JoinTable(
             name = "package_products",

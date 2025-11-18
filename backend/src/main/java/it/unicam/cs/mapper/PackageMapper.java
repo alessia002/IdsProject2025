@@ -19,7 +19,7 @@ public interface PackageMapper {
         if (entity.getProductList() != null) {
             entity.setPrice(entity.getProductList().stream().mapToDouble(Product::getPrice).sum());
         } else {
-            entity.setPrice(null);
+            entity.setPrice(0);
         }
     }
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

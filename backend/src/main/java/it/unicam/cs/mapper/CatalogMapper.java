@@ -6,7 +6,7 @@ import org.mapstruct.*;
 
 import static it.unicam.cs.enums.ProductStatus.DRAFT;
 
-@Mapper(componentModel = "spring", uses = { ProductMapper.class })
+@Mapper(componentModel = "spring", uses = { ProductMapper.class, PackageMapper.class })
 public interface CatalogMapper {
 
     @Mapping(target = "creationUserUsername", source = "creationUser.username")
