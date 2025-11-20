@@ -1,7 +1,7 @@
 package it.unicam.cs.mapper;
 
 import it.unicam.cs.dto.UserDTO;
-import it.unicam.cs.enums.Permission;
+import it.unicam.cs.enums.Role;
 import it.unicam.cs.model.User;
 import org.mapstruct.Mapper;
 import java.util.List;
@@ -13,22 +13,22 @@ public interface UserMapper {
     UserDTO toDTO(User entity);
     User toEntity(UserDTO dto);
 
-    default String permissionsToString(List<Permission> permissions) {
-        if (permissions == null || permissions.isEmpty()) {
+    default String rolesToString(List<Role> roles) {
+        if (roles == null || roles.isEmpty()) {
             return null;
         }
-        return permissions.stream()
+        return roles.stream()
                 .map(Enum::name)
                 .collect(Collectors.joining(","));
     }
 
-    default List<Permission> stringToPermissions(String permissionsString) {
-        if (permissionsString == null || permissionsString.isEmpty()) {
+    default List<Role> stringToRoles(String rolesString) {
+        if (rolesString == null || rolesString.isEmpty()) {
             return List.of();
         }
-        return Stream.of(permissionsString.split(","))
+        return Stream.of(rolesString.split(","))
                 .map(String::trim)
-                .map(Permission::valueOf)
+                .map(Role::valueOf)
                 .collect(Collectors.toList());
     }
 

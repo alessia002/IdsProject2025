@@ -1,5 +1,6 @@
 package it.unicam.cs.config;
 
+import it.unicam.cs.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,15 +23,18 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final CustomUserDetailsService userDetailService;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, CustomUserDetailsService userDetailService) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.userDetailService = userDetailService;
     }
 
     // metodo cuore della configurazione di sicurezza
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .userDetailsService(userDetailService)
                 // disabilita CSRF, necessario per API stateless JWT
                 .csrf(AbstractHttpConfigurer::disable)
                 // disabilita frameOptions per rendere accessibile la console H2 nel browser
@@ -40,7 +44,7 @@ public class SecurityConfig {
                 // rende le API di autenticazione e la console H2 pubbliche, tutto il resto richiede autenticazione
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/api/user/registration**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )

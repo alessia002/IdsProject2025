@@ -1,5 +1,6 @@
 package it.unicam.cs.dto;
 
+import it.unicam.cs.enums.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO
-{
+public class RegistrationRequestDTO {
     private String username;
     private String password;
-    private String roles;
+    private String requestedRole;
+    private RequestStatus status;
 }

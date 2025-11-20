@@ -1,6 +1,5 @@
 package it.unicam.cs.dto;
 
-import it.unicam.cs.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

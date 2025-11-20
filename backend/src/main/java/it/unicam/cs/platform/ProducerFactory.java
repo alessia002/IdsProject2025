@@ -1,7 +1,7 @@
 package it.unicam.cs.platform;
 
-import it.unicam.cs.enums.Permission;
-import it.unicam.cs.model.Producer;
+import it.unicam.cs.enums.Role;
+import it.unicam.cs.model.RegistrationRequest;
 import it.unicam.cs.model.User;
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.List;
 @Component
 public class ProducerFactory extends UserFactory {
     @Override
-    public User createUser(String name) {
-        Producer producer = new Producer();
-        producer.setUsername(name);
-        producer.setPermissions(List.of(
-                Permission.MARKETPLACE_EDIT));
-        return producer;
+    public User createUser(RegistrationRequest request) {
+        return User.builder()
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .roles(List.of(Role.ROLE_PRODUCER))
+                .build();
     }
 }

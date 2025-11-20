@@ -1,22 +1,22 @@
 package it.unicam.cs.service;
 
+import it.unicam.cs.model.User;
+import it.unicam.cs.dto.RegistrationRequestDTO;
 import it.unicam.cs.dto.UserDTO;
+import it.unicam.cs.enums.RequestStatus;
+import it.unicam.cs.mapper.RegistrationRequestMapper;
 import it.unicam.cs.mapper.UserMapper;
 import it.unicam.cs.model.*;
 import it.unicam.cs.platform.CuratorFactory;
 import it.unicam.cs.platform.DistributorFactory;
 import it.unicam.cs.platform.ProducerFactory;
 import it.unicam.cs.platform.TransformerFactory;
-import it.unicam.cs.repository.CuratorRepository;
-import it.unicam.cs.repository.DistributorRepository;
-import it.unicam.cs.repository.ProducerRepository;
-import it.unicam.cs.repository.TransformerRepository;
+import it.unicam.cs.repository.RegistrationRequestRepository;
 import it.unicam.cs.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,63 +24,76 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserService {
     private final PasswordEncoder encoder;
-    private final ProducerRepository producerRepo;
-    private final DistributorRepository distributorRepo;
-    private final TransformerRepository transformerRepo;
     private final UserRepository userRepo;
     private final UserMapper mapper;
     private final ProducerFactory producerFactory = new ProducerFactory();
     private final TransformerFactory transformerFactory = new TransformerFactory();
     private final DistributorFactory distributorFactory = new DistributorFactory();
     private final CuratorFactory curatorFactory;
-    private final CuratorRepository curatorRepository;
+    private final RegistrationRequestRepository registrationRepo;
+    private final RegistrationRequestMapper registrationMapper;
 
-    public UserDTO createProducer(UserDTO dto) {
-        if (producerRepo.findById(dto.getUsername()).isPresent()) {
+    public RegistrationRequestDTO createRequest(RegistrationRequestDTO dto) {
+        if (userRepo.findById(dto.getUsername()).isPresent()) {
             throw new EntityNotFoundException("Username already exists");
         }
-        User user = producerFactory.createUser(dto.getUsername());
-        user.setPassword(encoder.encode(dto.getPassword()));
-        User saved = producerRepo.save((Producer)user);
-        return mapper.toDTO(saved);
-    }
-
-    public UserDTO createTransformer(UserDTO dto) {
-        if (producerRepo.findById(dto.getUsername()).isPresent()) {
-            throw new EntityNotFoundException("Username already exists");
+        if (registrationRepo.findById(dto.getUsername()).isPresent()) {
+            throw new EntityNotFoundException("Username registration request already exists");
         }
-        User user = transformerFactory.createUser(dto.getUsername());
-        user.setPassword(encoder.encode(dto.getPassword()));
-        User saved = transformerRepo.save((Transformer)user);
-        return mapper.toDTO(saved);
+        RegistrationRequest request = registrationMapper.toEntity(dto);
+        request.setStatus(RequestStatus.PENDING);
+        RegistrationRequest saved = registrationRepo.save(request);
+        return registrationMapper.toDTO(saved);
     }
 
-    public UserDTO createDistributor(UserDTO dto) {
-        if (distributorRepo.findById(dto.getUsername()).isPresent()) {
-            throw new EntityNotFoundException("Username already exists");
+    public RegistrationRequestDTO approveRequest(String username){
+        RegistrationRequest request = registrationRepo.findById(username)
+                .orElseThrow(() -> new EntityNotFoundException("Request does not exist"));
+
+        //User user = userRepo.findById(username)
+                //.orElse(null ); da gestire nel caso utente esiste UC
+
+        User created = new User();
+        if (request.getRequestedRole().equals("PRODUCER")) {
+            created = producerFactory.createUser(request);
         }
-        User user = distributorFactory.createUser(dto.getUsername());
-        user.setPassword(encoder.encode(dto.getPassword()));
-        User saved = distributorRepo.save((Distributor) user);
-        return mapper.toDTO(saved);
-    }
-
-    public UserDTO createCurator(UserDTO dto) {
-        if (curatorRepository.findById(dto.getUsername()).isPresent()) {
-            throw new EntityNotFoundException("Username already exists");
+        if (request.getRequestedRole().equals("TRANSFORMER")) {
+            created = transformerFactory.createUser(request);
         }
-        User user = curatorFactory.createUser(dto.getUsername());
-        user.setPassword(encoder.encode(dto.getPassword()));
-        User saved = curatorRepository.save((Curator) user);
-        return mapper.toDTO(saved);
+        if (request.getRequestedRole().equals("DISTRIBUTOR")) {
+            created = distributorFactory.createUser(request);
+        }
+        if (request.getRequestedRole().equals("CURATOR")) {
+            created = curatorFactory.createUser(request);
+        }
+        created.setPassword(encoder.encode(request.getPassword()));
+        userRepo.save(created);
+        request.setStatus(RequestStatus.APPROVED);
+        return registrationMapper.toDTO(request);
     }
 
+    public RegistrationRequestDTO rejectRequest(String username){
+        RegistrationRequest request = registrationRepo.findById(username)
+                .orElseThrow(() -> new EntityNotFoundException("Request does not exist"));
+        request.setStatus(RequestStatus.REJECTED);
+        registrationRepo.save(request);
+        return registrationMapper.toDTO(request);
+    }
 
-    public List<UserDTO> getAll() {
+    public List<RegistrationRequestDTO> getAllRequests() {
+        return registrationRepo.findAll().stream().map(registrationMapper::toDTO).collect(Collectors.toList());
+    }
+
+    public List<UserDTO> getAllUsers() {
         return userRepo.findAll().stream().map(mapper::toDTO).collect(Collectors.toList());
     }
 
-    public UserDTO getByUsername(String username) {
+    public RegistrationRequestDTO getRequestByUsername(String username) {
+        return registrationRepo.findById(username).map(registrationMapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Request for user " + username + " not found"));
+    }
+
+    public UserDTO getUserByUsername(String username) {
         return userRepo.findById(username).map(mapper::toDTO)
                 .orElseThrow(() -> new EntityNotFoundException("User " + username + " not found"));
     }

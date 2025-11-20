@@ -1,33 +1,23 @@
 package it.unicam.cs.model;
 
-import it.unicam.cs.enums.Role;
+import it.unicam.cs.enums.RequestStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "registration_request")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User {
+public class RegistrationRequest {
     @Id
     @Column(nullable = false, unique = true)
     private String username;
-
     @Column(nullable = false)
     private String password;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id")
-    )
+    private String requestedRole;
     @Enumerated(EnumType.STRING)
-    private List<Role> roles;
-
+    private RequestStatus status;
 }
