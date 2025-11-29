@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -25,7 +27,7 @@ public class Package {
             joinColumns = @JoinColumn(name = "package_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<>();
     private int numProducts;
     @Enumerated(EnumType.STRING)
     private ProductStatus status;

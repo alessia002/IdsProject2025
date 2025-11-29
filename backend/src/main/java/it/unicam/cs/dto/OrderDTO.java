@@ -1,8 +1,6 @@
 package it.unicam.cs.dto;
 
 import it.unicam.cs.enums.OrderStatus;
-import it.unicam.cs.model.Product;
-import it.unicam.cs.model.Package;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +14,8 @@ public class OrderDTO {
     private Long id;
     private LocalDateTime date;
     private double price;
-    private List<Product> products;
-    private List<Package> packages;
+    private List<ProductDTO> products;
+    private List<PackageDTO> packages;
     private OrderStatus status;
     private String creationUserUsername;
 }

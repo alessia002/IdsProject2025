@@ -7,11 +7,10 @@ import it.unicam.cs.enums.RequestStatus;
 import it.unicam.cs.mapper.RegistrationRequestMapper;
 import it.unicam.cs.mapper.UserMapper;
 import it.unicam.cs.model.*;
-import it.unicam.cs.platform.CuratorFactory;
-import it.unicam.cs.platform.DistributorFactory;
-import it.unicam.cs.platform.ProducerFactory;
-import it.unicam.cs.platform.TransformerFactory;
+import it.unicam.cs.platform.*;
+import it.unicam.cs.repository.MapPointRepository;
 import it.unicam.cs.repository.RegistrationRequestRepository;
+import it.unicam.cs.repository.SupplyChainRepository;
 import it.unicam.cs.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -26,12 +25,10 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final UserRepository userRepo;
     private final UserMapper mapper;
-    private final ProducerFactory producerFactory = new ProducerFactory();
-    private final TransformerFactory transformerFactory = new TransformerFactory();
-    private final DistributorFactory distributorFactory = new DistributorFactory();
-    private final CuratorFactory curatorFactory;
     private final RegistrationRequestRepository registrationRepo;
     private final RegistrationRequestMapper registrationMapper;
+    private final SupplyChainRepository supplyChainRepo;
+    private final MapPointRepository mapPointRepo;
 
     public RegistrationRequestDTO createRequest(RegistrationRequestDTO dto) {
         if (userRepo.findById(dto.getUsername()).isPresent()) {
@@ -40,8 +37,14 @@ public class UserService {
         if (registrationRepo.findById(dto.getUsername()).isPresent()) {
             throw new EntityNotFoundException("Username registration request already exists");
         }
+        SupplyChain supplyChain = supplyChainRepo.findById(dto.getSupplyChainId()).orElseThrow(() -> new EntityNotFoundException("Supply chain does not exists"));
+        MapPoint mapPoint = mapPointRepo.findById(dto.getLocationId()).orElseThrow(() -> new EntityNotFoundException("MapPoint does not exists"));
+
         RegistrationRequest request = registrationMapper.toEntity(dto);
+        request.setSupplyChain(supplyChain);
+        request.setLocation(mapPoint);
         request.setStatus(RequestStatus.PENDING);
+        request.setPassword(encoder.encode(dto.getPassword()));
         RegistrationRequest saved = registrationRepo.save(request);
         return registrationMapper.toDTO(saved);
     }
@@ -50,32 +53,23 @@ public class UserService {
         RegistrationRequest request = registrationRepo.findById(username)
                 .orElseThrow(() -> new EntityNotFoundException("Request does not exist"));
 
-        //User user = userRepo.findById(username)
-                //.orElse(null ); da gestire nel caso utente esiste UC
-
-        User created = new User();
-        if (request.getRequestedRole().equals("PRODUCER")) {
-            created = producerFactory.createUser(request);
+        User user = userRepo.findById(username).orElse(null);
+        UserFactory userFactory = UserFactorySelector.getFactory(request.getRequestedRole());
+        if (user == null) {
+            user = userFactory.createUser(request);
+        } else {
+            user = userFactory.authorizeUser(user);
         }
-        if (request.getRequestedRole().equals("TRANSFORMER")) {
-            created = transformerFactory.createUser(request);
-        }
-        if (request.getRequestedRole().equals("DISTRIBUTOR")) {
-            created = distributorFactory.createUser(request);
-        }
-        if (request.getRequestedRole().equals("CURATOR")) {
-            created = curatorFactory.createUser(request);
-        }
-        created.setPassword(encoder.encode(request.getPassword()));
-        userRepo.save(created);
-        request.setStatus(RequestStatus.APPROVED);
+        request.getSupplyChain().addCompany(user);
+        request.approve();
+        registrationRepo.save(request);
         return registrationMapper.toDTO(request);
     }
 
     public RegistrationRequestDTO rejectRequest(String username){
         RegistrationRequest request = registrationRepo.findById(username)
                 .orElseThrow(() -> new EntityNotFoundException("Request does not exist"));
-        request.setStatus(RequestStatus.REJECTED);
+        request.reject();
         registrationRepo.save(request);
         return registrationMapper.toDTO(request);
     }

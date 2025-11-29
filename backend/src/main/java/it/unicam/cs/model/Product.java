@@ -3,6 +3,8 @@ package it.unicam.cs.model;
 import it.unicam.cs.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,7 +24,7 @@ public class Product implements IProduct {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "creation_user_username")
     private User creationUser;

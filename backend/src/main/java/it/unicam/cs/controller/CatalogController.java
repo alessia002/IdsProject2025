@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/catalog")
-
 public class CatalogController {
 
     private final CatalogService service;

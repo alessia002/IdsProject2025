@@ -3,9 +3,10 @@ package it.unicam.cs.model;
 import it.unicam.cs.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,7 +14,6 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
     @Id
     @Column(nullable = false, unique = true)
@@ -28,6 +28,17 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id")
     )
     @Enumerated(EnumType.STRING)
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private MapPoint location;
+
+    @ManyToOne
+    @JoinColumn(name = "supply_chain_id")
+    private SupplyChain supplyChain;
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 }

@@ -4,6 +4,7 @@ import it.unicam.cs.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,7 +24,7 @@ public class Catalog {
             joinColumns = @JoinColumn(name = "catalog_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<>();
     private int numProduct;
     @ManyToMany
     @JoinTable(
@@ -31,7 +32,7 @@ public class Catalog {
             joinColumns = @JoinColumn(name = "catalog_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id")
     )
-    private List<Package> packageList;
+    private List<Package> packageList = new ArrayList<>();
     private int numPackage;
     @Enumerated(EnumType.STRING)
     private ProductStatus status;

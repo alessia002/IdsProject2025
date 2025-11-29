@@ -1,6 +1,7 @@
 package it.unicam.cs.model;
 
 import it.unicam.cs.enums.RequestStatus;
+import it.unicam.cs.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,21 @@ public class RegistrationRequest {
     private String username;
     @Column(nullable = false)
     private String password;
-    private String requestedRole;
+    @Enumerated(EnumType.STRING)
+    private Role requestedRole;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private MapPoint location;
+    @ManyToOne
+    @JoinColumn(name = "supply_chain_id")
+    private SupplyChain supplyChain;
+
+    public void approve() {
+        setStatus(RequestStatus.APPROVED);
+    }
+    public void reject() {
+        setStatus(RequestStatus.REJECTED);
+    }
 }

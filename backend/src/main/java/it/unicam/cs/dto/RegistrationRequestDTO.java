@@ -13,4 +13,6 @@ public class RegistrationRequestDTO {
     private String password;
     private String requestedRole;
     private RequestStatus status;
+    private Long locationId;
+    private Long supplyChainId;
 }

@@ -27,11 +27,10 @@ public class PlatformApplication {
     CommandLineRunner initUsers(UserRepository repo, PasswordEncoder encoder) {
         return args -> {
             if(repo.findById("admin").isEmpty()) {
-                User admin = User.builder()
-                        .username("admin")
-                        .password(encoder.encode(adminPassword))
-                        .roles(List.of(Role.ROLE_ADMIN))
-                        .build();
+                User admin = new User();
+                admin.setUsername("admin");
+                admin.setPassword(encoder.encode(adminPassword));
+                admin.setRoles(List.of(Role.ROLE_ADMIN));
                 repo.save(admin);
             }
         };
