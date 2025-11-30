@@ -1,5 +1,6 @@
 package it.unicam.cs.service;
 
+import it.unicam.cs.enums.Role;
 import it.unicam.cs.model.User;
 import it.unicam.cs.dto.RegistrationRequestDTO;
 import it.unicam.cs.dto.UserDTO;
@@ -16,6 +17,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +35,11 @@ public class UserService {
 
     public RegistrationRequestDTO createRequest(RegistrationRequestDTO dto) {
         if (userRepo.findById(dto.getUsername()).isPresent()) {
-            throw new EntityNotFoundException("Username already exists");
+            throw new IllegalArgumentException("Username already exists");
         }
+        //controllare per username e role
         if (registrationRepo.findById(dto.getUsername()).isPresent()) {
-            throw new EntityNotFoundException("Username registration request already exists");
+            throw new IllegalArgumentException("Username registration request already exists");
         }
         SupplyChain supplyChain = supplyChainRepo.findById(dto.getSupplyChainId()).orElseThrow(() -> new EntityNotFoundException("Supply chain does not exists"));
         MapPoint mapPoint = mapPointRepo.findById(dto.getLocationId()).orElseThrow(() -> new EntityNotFoundException("MapPoint does not exists"));
@@ -90,5 +94,30 @@ public class UserService {
     public UserDTO getUserByUsername(String username) {
         return userRepo.findById(username).map(mapper::toDTO)
                 .orElseThrow(() -> new EntityNotFoundException("User " + username + " not found"));
+    }
+
+    public UserDTO removeRole(String username, String role) {
+        User user = userRepo.findById(username)
+                .orElseThrow(() -> new EntityNotFoundException("User " + username + " not found"));
+        if (Arrays.stream(Role.values()).noneMatch(r -> r.name().equalsIgnoreCase(role))) {
+            throw new IllegalArgumentException("Role " + role + " not found");
+        }
+
+        UserFactory userFactory = UserFactorySelector.getFactory(Role.valueOf(role.toUpperCase()));
+        userFactory.unauthorizeUser(user);
+
+        userRepo.save(user);
+        return mapper.toDTO(user);
+    }
+
+    public UserDTO addRole(String username, String role) {
+        User user = userRepo.findById(username)
+                .orElseThrow(() -> new EntityNotFoundException("User " + username + " not found"));
+
+        UserFactory userFactory = UserFactorySelector.getFactory(Role.valueOf(role));
+        userFactory.authorizeUser(user);
+
+        userRepo.save(user);
+        return mapper.toDTO(user);
     }
 }

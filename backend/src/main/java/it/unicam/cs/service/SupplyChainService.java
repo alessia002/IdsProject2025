@@ -26,9 +26,12 @@ public class SupplyChainService {
     }
 
     public Map<String, MapPoint> mapPoints(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Supply chain does not exist"))
-                .getCompanies()
+        SupplyChain sc = repo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Supply chain does not exist"));
+        if (sc.getCompanies() == null || sc.getCompanies().isEmpty()) {
+            throw new EntityNotFoundException("Supply chain does not contain any map data");
+        }
+        return sc.getCompanies()
                 .stream()
                 .collect(Collectors.toMap(
                         User::getUsername,

@@ -20,4 +20,8 @@ public class UserFactory {
         user.addRole(Role.ROLE_USER);
         return user;
     }
+
+    public void unauthorizeUser(User user) {
+        user.removeRole(Role.ROLE_USER);
+    }
 }

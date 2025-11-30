@@ -11,5 +11,9 @@ public class CuratorFactory extends UserFactory {
         user.addRole(Role.ROLE_CURATOR);
         return user;
     }
+    @Override
+    public void unauthorizeUser(User user) {
+        user.removeRole(Role.ROLE_CURATOR);
+    }
 }
 

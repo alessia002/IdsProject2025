@@ -20,7 +20,7 @@ public class UserController {
     @GetMapping("/getAll")
     public ResponseEntity<List<UserDTO>> getAll() {return ResponseEntity.ok(service.getAllUsers());}
 
-    @GetMapping
-    public ResponseEntity<UserDTO> getByUsername(@RequestParam("username") String username) { return ResponseEntity.ok(service.getUserByUsername(username));}
+    @GetMapping("/{username}")
+    public ResponseEntity<UserDTO> getByUsername(@PathVariable("username") String username) { return ResponseEntity.ok(service.getUserByUsername(username));}
 
 }

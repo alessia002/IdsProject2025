@@ -11,4 +11,8 @@ public class TransformerFactory extends UserFactory {
         user.addRole(Role.ROLE_TRANSFORMER);
         return user;
     }
+    @Override
+    public void unauthorizeUser(User user) {
+        user.removeRole(Role.ROLE_TRANSFORMER);
+    }
 }

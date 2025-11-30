@@ -11,4 +11,8 @@ public class ProducerFactory extends UserFactory {
         user.addRole(Role.ROLE_PRODUCER);
         return user;
     }
+    @Override
+    public void unauthorizeUser(User user) {
+        user.removeRole(Role.ROLE_PRODUCER);
+    }
 }

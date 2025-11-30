@@ -48,7 +48,8 @@ public class OrderService {
     }
 
     public OrderDTO searchById(Long id) {
-        return repo.findById(id).map(mapper::toDTO).orElseThrow();
+        return repo.findById(id).map(mapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with id " + id));
     }
 
     public List<OrderDTO> getAll() {

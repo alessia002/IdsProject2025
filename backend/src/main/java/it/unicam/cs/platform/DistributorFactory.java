@@ -11,4 +11,8 @@ public class DistributorFactory extends UserFactory {
         user.addRole(Role.ROLE_DISTRIBUTOR);
         return user;
     }
+    @Override
+    public void unauthorizeUser(User user) {
+        user.removeRole(Role.ROLE_DISTRIBUTOR);
+    }
 }

@@ -1,6 +1,7 @@
 package it.unicam.cs.controller;
 
 import it.unicam.cs.dto.RegistrationRequestDTO;
+import it.unicam.cs.dto.UserDTO;
 import it.unicam.cs.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -28,5 +29,10 @@ public class AdminController {
     @GetMapping("/request")
     public ResponseEntity<RegistrationRequestDTO> getByUsername(@RequestParam("username") String username) { return ResponseEntity.ok(service.getRequestByUsername(username));}
 
+    @PostMapping("/{username}/removeRole/{role}")
+    public ResponseEntity<UserDTO> removeRole(@PathVariable("username") String username, @PathVariable("role") String role) { return ResponseEntity.ok(service.removeRole(username, role));}
+
+    @PostMapping("/{username}/addRole/{role}")
+    public ResponseEntity<UserDTO> addRole(@PathVariable("username") String username, @PathVariable("role") String role) { return ResponseEntity.ok(service.addRole(username, role));}
 
 }
