@@ -1,42 +1,34 @@
-# Design pattern
+# Pattern Utilizzati nel Progetto
 
-## Brainstorming
+## 1. Evoluzione: Da Factory Method a Template Method nella Creazione degli Utenti
 
-# Creazionali
+### Situazione attuale
+La piattaforma utilizza una gerarchia di factory (`UserFactory`, `ProducerFactory`, `TransformerFactory`, ecc.) dove ogni sottoclasse ridefinisce il comportamento di autorizzazione dell’utente.  
+Il processo di creazione dell'utente è centralizzato in `UserFactory.createUser()`, mentre i ruoli sono assegnati tramite override di `authorizeUser()`.
 
-Creazione oggetti, sistema indipendente a come sono creati
+### Intenzione progettuale: **spostare completamente la logica verso un Template Method**
+L’obiettivo è rendere esplicito il fatto che le factory non creano tipi diversi di utenti, ma personalizzano un passo fisso del processo.  
+La classe base definirà il flusso completo di creazione come metodo *template*, mentre le sottoclassi forniranno unicamente le personalizzazioni nei metodi “hook” (`authorizeUser`, `unauthorizeUser`).
 
-- Factory Method: Creazione prodotti e pacchetti nel marketplace;  
-- Abstract Factory: Creazione diversi tipi di eventi o prodotti;  
-- Builder: Costruzione graduale eventi o pacchetti di prodotti configurabili;  
-- Prototype: Creazione prodotti o eventi simili velocemente;  
-- Singleton: Configurazione piattaforma;
+### Beneficio dell’evoluzione
+- Processo di creazione stabile e formalizzato.
+- Codice più pulito, meno override del metodo principale.
+- Le factory diventano veri e propri definitori di comportamento, non creatori di oggetti.
+- Coerenza architetturale con la responsabilità degli attori della piattaforma.
 
-# Strutturali
 
-Composizione tra classi e oggetti in strutture più grandi
+## 2. Decorator per l’Estensione dei Prodotti
 
-- Adapter: Integrare sistema OSM delle mappe;  
-- Bridge:   
-- Composite: Gestire i pacchetti come strutture gerarchiche;  
-- Decorator: Aggiunta recensioni prodotti  
-- Facade:   
-- Flyweight:  
-- Proxy:
+### Pattern: **Decorator**
+Realizzato tramite `ProductDecorator` e `ReviewDecorator`, consente di estendere dinamicamente le funzionalità degli oggetti `IProduct`, ad esempio con l’aggiunta di recensioni.
 
-# Comportamentali
+### Vantaggio
+Aggiunta di comportamenti senza modificare le classi principali dei prodotti, favorendo modularità ed espandibilità.
 
-Responsabilità e comunicazioni tra oggetti
 
-- Chain of responsibility: Validazione contenuti a più livelli;  
-- Command: Incapsulamento pubblicazione contenuti per undo (approvazione);  
-- Iterator: Scorrere prodotti o eventi;  
-- Mediator: Centralizzare la comunicazione degli attori;  
-- Memento: Ripristinare contenuti (approvazione);  
-- Observer: Notificare utenti su eventi;  
-- State: Gestione stati dei contenuti (bozza, da approvare, pubblicato);  
-- Strategy:   
-- Template Method:  
-- Visitor:
+## 3. Adapter per l’Integrazione con Sistemi Esterni
 
-## 
+### Pattern: **Adapter**
+Il componente `FacebookShareAdapter` adatta la piattaforma all’interfaccia di un social network esterno.  
+Il pattern permette di integrare nuovi sistemi social senza alterare la logica interna.
+
